@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleanmate - Cleaning Company</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poiret+One:wght@400;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* --- CSS VARIABLES (Extracted from Theme Colors) --- */
+        :root {
+            --primary: #2ebaa8; /* Teal Accent */
+            --primary-hover: #26998b;
+            --secondary: #2b2e33; /* Dark Slate Header/Footer */
+            --text-dark: #333333;
+            --text-gray: #777777;
+            --bg-light: #f7f7f7;
+            --white: #ffffff;
+            --border: #e5e5e5;
+            --font-heading: 'Poiret One';
+            --font-body: 'Raleway', sans-serif; letter-spacing: 1px;
+        }
+
+        /* --- GLOBAL RESET & TYPOGRAPHY --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); color: var(--text-gray); line-height: 1.7; overflow-x: hidden; background: var(--white); }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--text-dark); font-weight: 700; margin-bottom: 15px; }
+        a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; }
+        .container { max-width: 80%; margin: 0 auto; padding: 0 15px; }
+        .section-pad { padding: 90px 0; }
+        .text-center { text-align: center; }
+
+        /* Buttons */
+        .btn { display: inline-block; padding: 15px 35px; background: var(--primary); color: var(--white); font-family: var(--font-heading); font-weight: 700; font-size: 13px; text-transform: uppercase; border-radius: 3px; border: none; cursor: pointer; transition: background 0.3s ease, transform 0.2s ease; }
+        .btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: var(--primary); color: var(--white); }
+
+        /* Section Titles */
+        .section-title { font-size: 32px; font-weight: 800; text-transform: uppercase; margin-bottom: 20px; position: relative; padding-bottom: 20px; }
+        .section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 50px; height: 3px; background: var(--primary); }
+        .section-subtitle { font-size: 16px; color: var(--text-gray); max-width: 700px; margin: 0 auto 50px; }
+
+        /* --- TOP BAR --- */
+        .top-bar { background: var(--secondary); color: #aaaaaa; font-size: 14px; padding: 10px 0; }
+        .top-bar .container { display: flex; justify-content: space-between; align-items: center; }
+        .top-bar-info span { margin-right: 30px; }
+        .top-bar-info i { color: var(--primary); margin-right: 5px; }
+        .top-bar-social a { color: #aaaaaa; margin-left: 30px; }
+        .top-bar-social a:hover { color: var(--primary); }
+
+        /* --- STICKY HEADER --- */
+        .header { background: var(--white); padding: 15px 0; border-bottom: 1px solid var(--border); transition: all 0.4s ease; position: sticky; top: 0; z-index: 1000; }
+        .header.scrolled { padding: 15px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 28px; font-weight: 800; color: var(--secondary); font-family: var(--font-heading); letter-spacing: 2px; display: flex; align-items: center; gap: 10px;}
+        .logo i { color: var(--primary); font-size: 28px; }
+        .nav { display: flex; align-items: center; gap: 60px; }
+        .nav a { font-family: var(--font-heading); font-size: 16px; font-weight: 600; text-transform: uppercase; color: var(--secondary); letter-spacing: 5px;}
+        .nav a:hover, .nav a.active { color: var(--primary); }
+
+        /* --- HERO SECTION --- */
+        .hero { height: 90vh; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)), url('josue-michel-FhsFUo-Wfc0-unsplash.jpg') center/cover no-repeat fixed; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--white); }
+        .hero-subtitle { font-family: var(--font-heading); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 15px; color: var(--primary); }
+        .hero-title { font-size: 60px; font-weight: 800; text-transform: uppercase; letter-spacing: 5px; line-height: 1.5; margin-bottom: 30px; color: #e5e5e5;}
+
+        /* --- WHY CHOOSE US (Icon Boxes + Circular Image) --- */
+        .features-grid { display: grid; grid-template-columns: 1fr 400px 1fr; gap: 30px; align-items: center; margin-top: 50px; }
+        .feature-box { margin-bottom: 40px; display: flex; gap: 20px; }
+        .features-left .feature-box { text-align: right; flex-direction: row-reverse; }
+        .feature-icon { width: 60px; height: 60px; border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary); flex-shrink: 0; transition: all 0.3s; }
+        .feature-box:hover .feature-icon { background: var(--primary); color: var(--white); }
+        .feature-title { font-size: 22px; margin-bottom: 10px; }
+        .feature-desc { font-size: 16px; }
+        .feature-center-img { width: 400px; height: 400px; border-radius: 50%; object-fit: cover; margin: 0 auto; border: 15px solid var(--bg-light); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+        /* --- PARALLAX BANNER --- */
+        .parallax-section { background: linear-gradient(rgba(43,46,51,0.85), rgba(43,46,51,0.85)), url('https://images.unsplash.com/photo-1527515637-ed21f6a15ea8?auto=format&fit=crop&w=1920&q=80') center/cover fixed; color: var(--white); }
+        .parallax-section .section-title, .parallax-section h3 { color: var(--white); }
+        .parallax-section .section-title::after { background: var(--primary); }
+        .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 50px; text-align: center; }
+        .benefit-icon { font-size: 40px; color: var(--primary); margin-bottom: 20px; }
+
+        /* --- SERVICES CARDS --- */
+        .services { background: var(--bg-light); }
+        /* 1. Ensure the grid stretches all cards to equal height */
+      .services-grid { 
+          display: grid; 
+          grid-template-columns: repeat(3, 1fr); 
+          gap: 30px; 
+          /* THIS FORCES THEM TO ALIGN PERFECTLY AT THE TOP */
+          align-items: stretch; 
+      }
+
+      .service-card {
+          /* ... your other styles ... */
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          vertical-align: top; /* Failsafe if the grid breaks */
+      }
+
+      .service-card:hover { 
+          transform: translateY(-10px); 
+      }
+
+      /* 3. Enforce a strict height on the image wrapper so broken images don't collapse */
+      .service-img-wrap { 
+          position: relative; 
+          width: 100%;
+          height: 220px; /* Strict height */
+          flex-shrink: 0; /* Prevents this section from squishing */
+          background-color: #f0f0f0; /* Gray placeholder for broken images */
+          overflow: hidden; 
+      }
+
+      .service-img-wrap img { 
+          width: 100%; 
+          height: 100%; 
+          object-fit: cover; /* Prevents aspect ratio distortion */
+          transition: transform 0.5s ease;
+          display: block;
+      }
+
+      .service-card:hover img { 
+          transform: scale(1.1); 
+      }
+
+      /* 4. Make the content area fill the rest of the space */
+      .service-content { 
+          padding: 30px 20px; 
+          border-bottom: 3px solid transparent; 
+          transition: border 0.3s; 
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1; /* Forces the white background to stretch to the bottom */
+      }
+
+      .service-card:hover .service-content { 
+          border-bottom-color: var(--primary); 
+      }
+
+      .service-title { 
+          font-size: 20px; 
+          margin-bottom: 15px; 
+      }
+
+      /* 5. Push the button to the absolute bottom of the card */
+      .service-link { 
+          display: inline-block; 
+          margin-top: auto; /* Magic line: pushes the link to the bottom */
+          padding-top: 15px;
+          font-size: 13px; 
+          font-weight: 700; 
+          color: var(--primary); 
+          text-transform: uppercase; 
+          font-family: var(--font-heading); 
+      }
+
+      .service-img-wrap img { 
+          width: 100%; 
+          height: 100%; 
+          object-fit: cover; 
+          display: block;
+          transition: transform 0.5s ease;
+          /* ADD THIS LINE TO FIX THE ALIGNMENT BUG: */
+          color: transparent; 
+      }
+        /* --- ANIMATED COUNTERS --- */
+        .counters { background: var(--primary); color: var(--white); padding: 70px 0; }
+        .counters-grid { display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; }
+        .counter-num { font-size: 50px; font-family: var(--font-heading); font-weight: 800; margin-bottom: 5px; line-height: 1; }
+        .counter-text { font-size: 14px; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
+
+        /* --- PRICING CALCULATOR UI --- */
+        .calculator-wrapper { max-width: 900px; margin: 0 auto; }
+        .calc-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 50px; background: var(--bg-light); padding: 40px; border-radius: 5px; }
+        .calc-group label { display: block; font-family: var(--font-heading); font-weight: 700; margin-bottom: 15px; color: var(--secondary); font-size: 14px; text-transform: uppercase; }
+        
+        /* Custom Range Slider */
+        input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; margin-top: -8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: var(--border); border-radius: 2px; }
+        .range-vals { display: flex; justify-content: space-between; margin-top: 10px; font-size: 13px; color: var(--text-gray); font-weight: 600; }
+
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .price-card { background: var(--white); border: 1px solid var(--border); text-align: center; padding: 40px 20px; transition: all 0.3s; position: relative; overflow: hidden; }
+        .price-card.featured { border-color: var(--primary); box-shadow: 0 15px 40px rgba(0,0,0,0.08); transform: translateY(-10px); }
+        .price-card.featured::before { content: 'RECOMMENDED'; position: absolute; top: 15px; right: -35px; background: var(--primary); color: var(--white); font-size: 10px; font-weight: 700; padding: 5px 40px; transform: rotate(45deg); }
+        .price-title { font-size: 22px; margin-bottom: 20px; }
+        .price-val { font-size: 45px; font-family: var(--font-heading); font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 20px; }
+        .price-val span { font-size: 20px; vertical-align: super; }
+        .price-val small { font-size: 14px; color: var(--text-gray); font-weight: 400; display: block; margin-top: 5px; }
+        .price-list { list-style: none; margin-bottom: 30px; }
+        .price-list li { padding: 10px 0; border-bottom: 1px solid var(--bg-light); font-size: 14px; }
+
+        /* --- FOOTER --- */
+        .footer { background: var(--secondary); color: #aaaaaa; padding-top: 80px; }
+        .footer h4 { color: var(--white); font-size: 18px; margin-bottom: 25px; position: relative; padding-bottom: 20px; }
+        .footer h4::after { content: ''; position: absolute; left: 0; bottom: 0; width: 30px; height: 2px; background: var(--primary); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 60px; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: #aaaaaa; }
+        .footer-links a:hover { color: var(--primary); padding-left: 5px; }
+        .footer-contact li { display: flex; gap: 15px; margin-bottom: 15px; }
+        .footer-contact i { color: var(--primary); margin-top: 5px; }
+        .copyright { background: #222428; padding: 25px 0; text-align: center; font-size: 13px; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .features-grid { grid-template-columns: 1fr; text-align: center; }
+            .features-left .feature-box { flex-direction: row; text-align: left; }
+            .feature-center-img { width: 250px; height: 250px; }
+            .services-grid, .pricing-grid, .benefits-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .price-card.featured { transform: translateY(0); }
+        }
+
+                /* --- INTERACTIVE CAROUSEL STYLES --- */
+        .carousel-viewport {
+            width: 100%;
+            overflow-x: hidden; /* Hides the native scrollbar */
+            padding: 20px 0 40px 0;
+            cursor: ew-resize; /* Shows left/right arrows on hover */
+            /* Hide scrollbar for Firefox and Edge */
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+        .carousel-viewport::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome/Safari */
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 30px;
+            width: max-content; /* Allows track to be as wide as its children */
+        }
+
+        .carousel-card {
+            width: 360px; /* Fixed width matching the image proportions */
+            background: var(--white);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-bottom: 40px;
+        }
+
+        .carousel-card img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .carousel-card h3 {
+            margin-top: 30px;
+            font-size: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-dark);
+        }
+
+        .carousel-card .divider {
+            width: 30px;
+            height: 2px;
+            background: #9ab2c1; /* Exact grayish-blue from screenshot */
+            margin: 10px auto 20px;
+        }
+
+        .carousel-card p {
+            font-size: 14px;
+            padding: 0 30px;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* Pagination Dots */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #9ab2c1; /* Grayish-blue border */
+            background: transparent;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            padding: 0;
+        }
+
+        .carousel-dot.active {
+            background: #9ab2c1; /* Filled color when active */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .carousel-card { width: 300px; }
+        }
+        @media (max-width: 768px) {
+            .carousel-card { width: 260px; }
+        }
+        /* --- PARALLAX PRIORITIES SECTION --- */
+        .priorities-parallax {
+            position: relative;
+            padding: 120px 0;
+            /* Unsplash placeholder simulating the cleaning woman background */
+            background-image: url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1920&q=80'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* THIS creates the Parallax effect */
+            color: var(--white);
+        }
+
+        .parallax-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(43, 46, 51, 0.75); /* Dark slate semi-transparent overlay */
+            z-index: 1;
+        }
+
+        .relative-content {
+            position: relative;
+            z-index: 2; /* Keeps the text above the dark overlay */
+        }
+
+        /* Custom White Heading with White Divider */
+        .section-title-white {
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 25px;
+            color: var(--white);
+            font-family: var(--font-heading);
+        }
+
+        .section-title-white::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: var(--white); /* White line instead of the usual primary color */
+        }
+
+        .subtitle-white {
+            font-size: 18px;
+            margin-bottom: 60px;
+            font-weight: 400;
+        }
+
+        /* Icon Grid */
+        .priorities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .priority-item {
+            opacity: 0.5; /* Fades out the non-active items */
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* Lights up on hover or if it has the 'active' class */
+        .priority-item.active,
+        .priority-item:hover {
+            opacity: 1;
+            transform: translateY(-5px);
+        }
+
+        .priority-item i {
+            font-size: 55px;
+            margin-bottom: 20px;
+            font-weight: 300; 
+        }
+
+        .priority-item h4 {
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--white);
+            margin: 0;
+        }
+
+        /* Bottom Text */
+        .bottom-desc {
+            max-width: 950px;
+            margin: 0 auto;
+            font-size: 16px;
+            letter-spacing: 1px;
+            line-height: 2;
+            color: #e0e0e0;
+            transition: opacity 0.3s ease; /* ADD THIS LINE for smooth fading */
+        }
+
+        /* --- 1. MAIN LAYOUT (Side-by-Side) --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Splits the section 50/50 */
+            gap: 60px;
+            align-items: center; /* Centers the text vertically with the images */
+        }
+
+        /* --- BULLETPROOF UNIFIED GRID --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr; /* 2 Columns: Left is 1 part, Right is 1.2 parts */
+            grid-template-rows: repeat(2, 1fr); /* 2 equal-height rows */
+            gap: 20px;
+            height: 550px; /* CRITICAL: A set height gives the grid a strict canvas to work with */
+        }
+
+        /* Base style for all 3 items */
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Force the large item to the Right Column and span both rows */
+        .gallery-item.large {
+            grid-column: 2; /* CRITICAL: Forces this image into the right-hand column */
+            grid-row: 1 / span 2; /* CRITICAL: Starts at the top row and stretches down 2 rows */
+        }
+
+        /* The magic that forces images to fill the boxes without distorting */
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            display: block; 
+        }
+
+        /* --- IMMEDIATE HOVER OVERLAY --- */
+        .hover-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0); 
+            transition: background-color 0.3s ease; 
+            pointer-events: none; 
+        }
+
+        .gallery-item:hover .hover-overlay {
+            background-color: rgba(255, 255, 255, 0.4); 
+        }
+
+        /* --- 4. RIGHT COLUMN TEXT STYLING --- */
+        .about-content {
+            padding: 0 10px;
+        }
+
+        .about-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: #111;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 20px;
+            text-transform: uppercase;
+            font-family: var(--font-heading);
+        }
+
+        /* The Green Divider Line */
+        .about-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #2ebaa8; /* Green from the screenshot */
+        }
+
+        /* The Green Button */
+        .btn-green {
+            background-color: #2ebaa8; /* Green from the screenshot */
+            color: white;
+            border-radius: 25px;
+            padding: 12px 35px;
+            font-size: 14px;
+            font-family: var(--font-body);
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-green:hover {
+            background-color: #26998b; /* Slightly darker green on hover */
+        }
+
+        /* --- 5. MOBILE RESPONSIVENESS --- */
+        @media (max-width: 992px) {
+            .about-grid {
+                grid-template-columns: 1fr; /* Stacks images on top, text on bottom for mobile */
+                gap: 40px;
+            }
+        }
+
+        .hover-overlay .alt-text {
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 16px;
+            font-family: var(--font-heading);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 4px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.1s ease-in-out;
+        }
+
+        .gallery-item:hover .hover-overlay .alt-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- LIGHTBOX MODAL --- */
+        .lightbox {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 9999;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(30, 30, 30, 0.9); /* Dark shadow background */
+        }
+
+        .lightbox-content-wrapper {
+            position: relative;
+            margin: auto;
+            padding: 0;
+            width: 80%; /* Default width */
+            max-width: 1000px;
+            background: #fff;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            transition: width 0.3s ease, max-width 0.3s ease; /* Smooth expansion */
+        }
+
+        /* Expanded state class (Added via JS) */
+        .lightbox-content-wrapper.expanded {
+            width: 95%;
+            max-width: 1400px;
+        }
+
+        .lightbox-img {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Top Right Expand/Minimize Button */
+        .lightbox-expand-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+        .lightbox-expand-btn:hover { background: rgba(0, 0, 0, 0.2); }
+
+        /* Bottom Right Close (X) Area */
+        .lightbox-close-row {
+            background: #fff;
+            padding: 10px 20px;
+            text-align: right;
+            border-top: 1px solid #eee;
+        }
+
+        .lightbox-close-btn {
+            color: #999;
+            font-size: 28px;
+            font-weight: bold;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .lightbox-close-btn:hover { color: #333; }
+
+        /* Responsive Grid Adjustments */
+        @media (max-width: 992px) {
+            .about-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-rows: repeat(2, 150px); }
+            .about-content { padding: 0 20px; }
+        }
+        .btnfooter {
+            border-radius: 50%; 
+            padding: 20px 20px 17px 20px;
+            background-color: #40484a;
+            align-items: center; 
+            justify-content: center;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .btnfooter:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        /* --- DRAG CAROUSEL & LINK UPDATES --- */
+.carousel-viewport {
+    width: 100%;
+    overflow-x: hidden; 
+    padding: 20px 0 40px 0;
+    cursor: grab; /* Shows an open hand */
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
+}
+.carousel-viewport:active {
+    cursor: grabbing; /* Shows a closed fist when dragging */
+}
+
+/* Link Wrapper Styling */
+.carousel-card .card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    width: 100%;
+}
+
+/* Smooth opacity transition for the image and text */
+.carousel-card .card-link img,
+.carousel-card .card-link h3 {
+    transition: opacity 0.3s ease;
+}
+
+/* The Hover Effect */
+.carousel-card .card-link:hover img,
+.carousel-card .card-link:hover h3 {
+    opacity: 0.6; /* Lightens the elements on hover */
+}
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-info">
+                <span><i class="fas fa-clock" ></i> Mon - Fri: 8:00 - 17:00</span>
+                <span><i class="fas fa-phone"></i> 1-800-123-4567</span>
+                <span><i class="fas fa-envelope"></i> info@cleanmate.com</span>
+            </div>
+            <div class="top-bar-social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <header class="header" id="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="active">Home</a>
+                <a href="#">About</a>
+                <a href="#">Services</a>
+            </nav>
+            <div class="logo">
+                <i class="fas fa-broom"></i> Cleanmate
+            </div>
+            <nav class="nav">
+                <a href="#">Projects</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact</a>
+                <!-- <a href="#" class="btn">Get a Quote</a> -->
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container gs-fade-up">
+            <div class="hero-subtitle">Professional Cleaning Services</div>
+            <h1 class="hero-title">Estimate Total Costs<br>Of House Cleaning</h1>
+            <a href="#calculator" class="btn">Get Estimate</a>
+        </div>
+    </section>
+
+    <section class="section-pad text-center">
+        <div class="container">
+            <h2 class="section-title gs-fade-up">Why Choose Us</h2>
+            <p class="section-subtitle gs-fade-up">We are a professional cleaning company committed to providing top-tier service. Our experienced staff ensures your home is spotless.</p>
+            
+            <div class="features-grid">
+                <div class="features-left">
+                    <div class="feature-box gs-slide-right">
+                        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div>
+                            <h3 class="feature-title">Trusted Professionals</h3>
+                            <p class="feature-desc">All our cleaners are strictly vetted, background-checked, and highly trained.</p>
+                        </div>
+                    </div>
+                    <div class="feature-box gs-slide-right">
+                        <div class="feature-icon"><i class="fas fa-calendar-check"></i></div>
+                        <div>
+                            <h3 class="feature-title">Flexible Schedule</h3>
+                            <p class="feature-desc">We work around your schedule. Book a clean weekly, bi-weekly, or monthly.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gs-fade-up">
+                    <img src="https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&w=600&q=80" alt="Happy Family" class="feature-center-img">
+                </div>
+
+                <div class="features-right" style="text-align: left;">
+                    <div class="feature-box gs-slide-left" >
+                        <div class="feature-icon"><i class="fas fa-leaf"></i></div>
+                        <div>
+                            <h3 class="feature-title">Eco-Friendly</h3>
+                            <p class="feature-desc">We use safe, green cleaning products that protect your family and pets.</p>
+                        </div>
+                    </div>
+                    <div class="feature-box gs-slide-left">
+                        <div class="feature-icon"><i class="fas fa-smile"></i></div>
+                        <div>
+                            <h3 class="feature-title">100% Satisfaction</h3>
+                            <p class="feature-desc">Not happy? Let us know within 24 hours and we'll re-clean for free.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="priorities-parallax">
+        <div class="parallax-overlay"></div>
+        
+        <div class="container relative-content" style="height: 470px;">
+            <div class="text-center gs-fade-up">
+                <h2 class="section-title-white">NOTHING IS MORE IMPORTANT</h2>
+                <p class="subtitle-white">We prioritize the following.</p>
+            </div>
+
+            <div class="priorities-grid gs-fade-up" data-delay="0.2">
+                <div class="priority-item active" data-text="Our cleaning services are affordable and our cleaning experts are highly trained. If for any reason you aren't happy with our professional cleaning services, contact Cleanmate. We will come back and clean the specific areas that didn't meet your expectations. Nothing is more important to us than your satisfaction.">
+                    <svg viewBox="0 0 1024 1024" width="100" height="100" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M512 505.6c-108.8 0-204.8-89.6-204.8-204.8S396.8 102.4 512 102.4c108.8 0 204.8 89.6 204.8 204.8S620.8 505.6 512 505.6z m0-358.4c-83.2 0-153.6 70.4-153.6 153.6s64 153.6 153.6 153.6 153.6-70.4 153.6-153.6S595.2 147.2 512 147.2z" fill="#ffffff"></path>
+                            <path d="M832 864c0-211.2-147.2-377.6-326.4-377.6s-326.4 166.4-326.4 377.6H832z" fill="#ffffff"></path>
+                            <path d="M832 889.6H147.2v-25.6c0-224 160-403.2 352-403.2s352 179.2 352 396.8v25.6l-19.2 6.4z m-633.6-51.2h608C800 659.2 665.6 512 505.6 512c-166.4 0-294.4 147.2-307.2 326.4zM710.4 499.2c-12.8 0-25.6-12.8-25.6-25.6s12.8-25.6 25.6-25.6c64 0 121.6-51.2 121.6-121.6 0-51.2-32-96-83.2-115.2-12.8-6.4-19.2-19.2-12.8-32 6.4-12.8 19.2-19.2 32-12.8 70.4 19.2 115.2 83.2 115.2 160-6.4 96-83.2 172.8-172.8 172.8z" fill="#ffffff"></path>
+                            <path d="M966.4 806.4h-57.6c-12.8 0-25.6-12.8-25.6-25.6s12.8-25.6 25.6-25.6h32c-12.8-140.8-115.2-249.6-236.8-249.6-12.8 0-25.6-12.8-25.6-25.6s12.8-25.6 25.6-25.6c160 0 288 147.2 288 326.4v25.6h-25.6z" fill="#ffffff"></path>
+                            <path d="M300.8 499.2c-6.4 0-6.4 0 0 0-44.8 0-89.6-12.8-121.6-44.8-32-32-44.8-76.8-44.8-121.6 0-70.4 44.8-134.4 115.2-160 12.8-6.4 25.6 0 32 12.8 6.4 12.8 0 25.6-12.8 32-57.6 19.2-89.6 64-89.6 115.2 0 32 12.8 64 32 83.2 19.2 25.6 51.2 32 83.2 38.4 19.2 0 25.6 12.8 25.6 25.6s-6.4 19.2-19.2 19.2z" fill="#ffffff"></path>
+                            <path d="M89.6 806.4H12.8v-25.6c0-179.2 128-320 288-320 12.8 0 25.6 12.8 25.6 25.6s-12.8 25.6-25.6 25.6C179.2 512 76.8 620.8 64 761.6h32c12.8 0 25.6 12.8 25.6 25.6-6.4 6.4-12.8 19.2-32 19.2z" fill="#ffffff"></path>
+                        </g>
+                    </svg>
+                    <h4>OUR CUSTOMERS</h4>
+                </div>
+                <div class="priority-item" data-text="We are committed to using eco-friendly, non-toxic cleaning products that are safe for your family, your pets, and the planet. Our green cleaning initiatives ensure a spotless home without leaving behind harmful chemical residues.">
+                    <svg fill="#ffffff" width="100" height="100" viewBox="0 0 512 512" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier"><title></title> 
+                            <path d="M371.13,257.23C363.73,132.73,264.22,41.76,260,38c-.53-.48-1.26-.41-1.9-.67a3.34,3.34,0,0,0-4.19,0c-.63.26-1.35.19-1.89.67-4.23,3.81-103.74,94.78-111.13,219.28-7.53,126.5,77.66,158.53,78.52,158.82a5.75,5.75,0,0,0,2,.36,6,6,0,0,0,2-11.57c-3.16-1.16-77.63-29.66-70.66-146.9C159.05,152,237.55,68.79,256,50.63c18.45,18.15,96.93,101.22,103.24,207.31,7,117.24-67.5,145.74-70.68,146.9a6,6,0,0,0,2,11.57,5.69,5.69,0,0,0,2-.36C293.47,415.76,378.65,383.73,371.13,257.23Z"></path>
+                            <path d="M305.33,324.83a6,6,0,0,0-9.91-6.64L262,368V312.16l43.38-64.53a6,6,0,0,0-9.91-6.64L262,290.78V235l26.35-39.19a6,6,0,0,0-9.91-6.65L262,213.58V151.17a6,6,0,1,0-11.92,0v62.41l-16.44-24.46a6,6,0,1,0-9.9,6.65L250,235v55.81L216.58,241a6,6,0,0,0-9.91,6.64L250,312.16V368l-33.45-49.78a6,6,0,0,0-9.91,6.64L250,389.36V469.5a6,6,0,1,0,11.92,0V389.36Z"></path>
+                        </g>
+                    </svg>
+                    <h4>THE ENVIRONMENT</h4>
+                </div>
+                <div class="priority-item" data-text="Clear, transparent communication is the key to a successful partnership. From your initial quote to post-cleaning follow-ups, our team is always available to answer questions, adjust schedules, and listen to your specific needs.">
+                    <svg viewBox="0 0 24 24" width="100" height="100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier"> 
+                            <path d="M18.3569 1.61413C18.57 1.25895 19.0307 1.14378 19.3859 1.35689L19 2.00001C19.3859 1.35689 19.3855 1.35668 19.3859 1.35689L19.3873 1.35772L19.3888 1.35867L19.3925 1.36093L19.4021 1.36684C19.4095 1.37142 19.4187 1.37726 19.4297 1.38438C19.4517 1.39861 19.4808 1.41798 19.516 1.44261C19.5863 1.49183 19.6813 1.56234 19.7926 1.65509C20.0147 1.84018 20.3052 2.11667 20.5945 2.49272C21.1773 3.25046 21.75 4.40735 21.75 6.00001C21.75 7.59266 21.1773 8.74955 20.5945 9.50729C20.3052 9.88334 20.0147 10.1598 19.7926 10.3449C19.6813 10.4377 19.5863 10.5082 19.516 10.5574C19.4808 10.582 19.4517 10.6014 19.4297 10.6156C19.4242 10.6192 19.4192 10.6224 19.4146 10.6253C19.41 10.6283 19.4058 10.6309 19.4021 10.6332L19.3925 10.6391L19.3888 10.6413L19.3873 10.6423C19.3869 10.6425 19.3859 10.6431 19 10L19.3859 10.6431C19.0307 10.8562 18.57 10.7411 18.3569 10.3859C18.1447 10.0322 18.258 9.57388 18.6097 9.35959L18.6152 9.35606C18.6225 9.35134 18.6363 9.3422 18.6558 9.32855C18.6949 9.30121 18.7562 9.25609 18.8324 9.19259C18.9853 9.06518 19.1948 8.86667 19.4055 8.59272C19.8227 8.05046 20.25 7.20735 20.25 6.00001C20.25 4.79266 19.8227 3.94955 19.4055 3.40729C19.1948 3.13334 18.9853 2.93483 18.8324 2.80742C18.7562 2.74393 18.6949 2.6988 18.6558 2.67146C18.6363 2.65781 18.6225 2.64867 18.6152 2.64396L18.6097 2.64043C18.258 2.42614 18.1447 1.96783 18.3569 1.61413Z" fill="#ffffff"></path> 
+                            <path d="M10 10C12.2091 10 14 8.20915 14 6.00001C14 3.79087 12.2091 2.00001 10 2.00001C7.79086 2.00001 6 3.79087 6 6.00001C6 8.20915 7.79086 10 10 10Z" fill="#ffffff"></path> 
+                            <path d="M2 17.5C2 19.9853 2 22 10 22C18 22 18 19.9853 18 17.5C18 15.0147 14.4183 13 10 13C5.58172 13 2 15.0147 2 17.5Z" fill="#ffffff"></path> 
+                            <path d="M17.3859 3.35689C17.0307 3.14378 16.57 3.25895 16.3569 3.61413L16.6051 4.63763L16.6129 4.64295C16.6246 4.65115 16.6468 4.66736 16.6761 4.6918C16.7353 4.74108 16.8198 4.82084 16.9055 4.93229C17.0727 5.14955 17.25 5.49266 17.25 6.00001C17.25 6.50735 17.0727 6.85046 16.9055 7.06772C16.8198 7.17917 16.7353 7.25893 16.6761 7.30822C16.6468 7.33265 16.6246 7.34887 16.6129 7.35707L16.6051 7.36238C16.257 7.57784 16.1456 8.03372 16.3569 8.38588C16.57 8.74106 17.0307 8.85624 17.3859 8.64313L17 8.00001C17.3859 8.64313 17.3855 8.64333 17.3859 8.64313L17.3872 8.64232L17.3887 8.64145L17.3918 8.63953L17.3993 8.63493L17.4185 8.62272C17.4332 8.61322 17.4515 8.60098 17.4731 8.58591C17.516 8.55584 17.572 8.51424 17.6364 8.46055C17.7647 8.35358 17.9302 8.19584 18.0945 7.98229C18.4273 7.54955 18.75 6.89266 18.75 6.00001C18.75 5.10735 18.4273 4.45046 18.0945 4.01772C17.9302 3.80417 17.7647 3.64643 17.6364 3.53947C17.572 3.48577 17.516 3.44418 17.4731 3.4141C17.4515 3.39904 17.4332 3.38679 17.4185 3.3773L17.3993 3.36508L17.3918 3.36049L17.3887 3.35856L17.3872 3.35769C17.3869 3.35749 17.3859 3.35689 17 4.00001L17.3859 3.35689Z" fill="#ffffff"></path> 
+                        </g>
+                    </svg>
+                    <h4>COMMUNICATION</h4>
+                </div>
+            </div>
+
+            <div class="text-center gs-fade-up" data-delay="0.4">
+                <p class="bottom-desc" id="priority-text">
+                    Our cleaning services are affordable and our cleaning experts are highly trained. If for any reason you aren't happy with our professional cleaning services, contact Cleanmate. We will come back and clean the specific areas that didn't meet your expectations. Nothing is more important to us than your satisfaction.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section-pad parallax-section">
+        <div class="container">
+            <div class="text-center gs-fade-up">
+                <h2 class="section-title">High Quality Cleaning Services</h2>
+                <p class="section-subtitle" style="color:#ddd;">Delivering immaculate results for residential and commercial spaces.</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="gs-fade-up" data-delay="0.1">
+                    <i class="fas fa-home benefit-icon"></i>
+                    <h3>House Cleaning</h3>
+                    <p>Comprehensive domestic cleaning tailored to your specific household needs.</p>
+                </div>
+                <div class="gs-fade-up" data-delay="0.2">
+                    <i class="fas fa-building benefit-icon"></i>
+                    <h3>Office Cleaning</h3>
+                    <p>Maintain a professional, hygienic workspace to boost employee productivity.</p>
+                </div>
+                <div class="gs-fade-up" data-delay="0.3">
+                    <i class="fas fa-seedling benefit-icon"></i>
+                    <h3>Gardening</h3>
+                    <p>Expert lawn care, landscaping, and maintenance for beautiful outdoor spaces.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad interactive-carousel-section" style="background: var(--bg-light);">
+      <div class="container">
+          <div class="text-center gs-fade-up">
+              <h2 class="section-title">Our Cleaning Services</h2>
+              <p class="section-subtitle">We offer a wide variety of cleaning and maintenance solutions.</p>
+          </div>
+
+          <div class="carousel-viewport gs-fade-up">
+            <div class="carousel-track">
+                
+                <div class="carousel-card">
+                    <a href="#" class="card-link">
+                        <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=500&q=80" alt="Standard Cleaning">
+                        <h3>Standard Cleaning</h3>
+                    </a>
+                    <div class="divider"></div>
+                    <p>Regular maintenance and house cleaning by professional cleaners.</p>
+                </div>
+                
+                <div class="carousel-card">
+                    <a href="#" class="card-link">
+                        <img src="jeshoots-com-__ZMnefoI3k-unsplash.jpg" alt="Post Renovation">
+                        <h3>Post Renovation</h3>
+                    </a>
+                    <div class="divider"></div>
+                    <p>Get rid of the dust left behind after construction or renovation.</p>
+                </div>
+                
+                <div class="carousel-card">
+                    <a href="#" class="card-link">
+                        <img src="everdrop-gmbh-SqOMDOQb3ws-unsplash.jpg" alt="Green Spaces">
+                        <h3>Green Spaces Maintenance</h3>
+                    </a>
+                    <div class="divider"></div>
+                    <p>The right maintenance methods will make keeping your garden beautiful.</p>
+                </div>
+                
+                <div class="carousel-card">
+                    <a href="#" class="card-link">
+                        <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=500&q=80" alt="Move In">
+                        <h3>Move In / Out</h3>
+                    </a>
+                    <div class="divider"></div>
+                    <p>We will leave the place looking better than it did when you arrived.</p>
+                </div>
+                
+                <div class="carousel-card">
+                    <a href="#" class="card-link">
+                        <img src="anton-SnKfmC1I9fU-unsplash.jpg" alt="Office Cleaning">
+                        <h3>Office Cleaning</h3>
+                    </a>
+                    <div class="divider"></div>
+                    <p>Maintain a productive, hygienic workspace for your employees.</p>
+                </div>
+                
+                <div class="carousel-card">
+                    <a href="#" class="card-link">
+                        <img src="https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&w=500&q=80" alt="Deep Cleaning">
+                        <h3>Deep Cleaning</h3>
+                    </a>
+                    <div class="divider"></div>
+                    <p>Intensive top-to-bottom cleaning targeting hidden dirt and grime.</p>
+                </div>
+                
+                <div class="carousel-card">
+                    <a href="#" class="card-link">
+                        <img src="https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&w=500&q=80" alt="Deep Cleaning">
+                        <h3>Deep Cleaning 2</h3>
+                    </a>
+                    <div class="divider"></div>
+                    <p>Intensive top-to-bottom cleaning targeting hidden dirt and grime.</p>
+                </div>
+                
+                <div class="carousel-card">
+                    <a href="#" class="card-link">
+                        <img src="https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&w=500&q=80" alt="Deep Cleaning">
+                        <h3>Deep Cleaning 3</h3>
+                    </a>
+                    <div class="divider"></div>
+                    <p>Intensive top-to-bottom cleaning targeting hidden dirt and grime.</p>
+                </div>
+                
+                <div class="carousel-card">
+                    <a href="#" class="card-link">
+                        <img src="https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&w=500&q=80" alt="Deep Cleaning">
+                        <h3>Deep Cleaning 4</h3>
+                    </a>
+                    <div class="divider"></div>
+                    <p>Intensive top-to-bottom cleaning targeting hidden dirt and grime.</p>
+                </div>
+                <div class="carousel-card">
+                    <a href="#" class="card-link">
+                        <img src="https://images.unsplash.com/photo-1595846519845-68e298c2edd8?auto=format&fit=crop&w=500&q=80" alt="Deep Cleaning">
+                        <h3>Deep Cleaning 4</h3>
+                    </a>
+                    <div class="divider"></div>
+                    <p>Intensive top-to-bottom cleaning targeting hidden dirt and grime.</p>
+                </div>
+
+            </div> </div> <div class="carousel-dots gs-fade-up"></div>
+        
+    </div> </section>
+
+    <section class="section-pad about-company" id="about-section">
+    <div class="container">
+        <div class="about-grid">
+            
+            <div class="gallery-wrapper gs-slide-right">
+                <div class="gallery-grid"> 
+                    
+                    <div class="gallery-item" data-full-img="42b5a1db390e24f435734e8a1d6abcc9.jpg">
+                        <img src="42b5a1db390e24f435734e8a1d6abcc9.jpg" alt="Upholstery Cleaning">
+                        <div class="hover-overlay"></div>
+                    </div>
+
+                    <div class="gallery-item" data-full-img="Choosing-the-Best-Professional-Home-Cleaning-Service-in-Sydney.jpg">
+                        <img src="Choosing-the-Best-Professional-Home-Cleaning-Service-in-Sydney.jpg" alt="Window Cleaning">
+                        <div class="hover-overlay"></div>
+                    </div>
+
+                    <div class="gallery-item large" data-full-img="professional-cleaning-service-worker-mopping-600nw-2657392197.webp">
+                        <img src="professional-cleaning-service-worker-mopping-600nw-2657392197.webp" alt="Living Room Detail">
+                        <div class="hover-overlay"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="about-content gs-slide-left text-center">
+                <h2 class="about-title">ABOUT OUR COMPANY</h2>
+                
+                <p class="subtitle" style="font-weight: 300; font-size: 22px; color: #555; margin-bottom: 30px;">
+                    Exceptional level of cleaning services.
+                </p>
+                
+                <p style="font-size: 15px; line-height: 1.8; color: #777; margin-bottom: 40px;">
+                    Founded in 1995 Cleanmate quickly built a reputation as one of the leading providers of residential and commercial cleaning solutions. Our continuous pursuit for perfection has resulted in consistent growth each year. Our focus is to listen to our clients, understand their needs and provide the exceptional level of residential and commercial cleaning service.
+                </p>
+                
+                <a href="#" class="btn-green">Learn more</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+    <div id="lightbox-modal" class="lightbox">
+        <div class="lightbox-content-wrapper">
+            <!--<button class="lightbox-expand-btn" aria-label="Expand image" title="Expand image">
+                <i class="fas fa-expand"></i>
+            </button>
+        -->
+            <img class="lightbox-img" src="" alt="Full size image">
+            
+            <div class="lightbox-close-row">
+                <button class="lightbox-close-btn" aria-label="Close modal">&times;</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="counters" id="counter-section">
+        <div class="container">
+            <div class="counters-grid">
+                <div class="counter-box">
+                    <div class="counter-num" data-target="275">0</div>
+                    <div class="counter-text">Happy Customers</div>
+                </div>
+                <div class="counter-box">
+                    <div class="counter-num" data-target="190">0</div>
+                    <div class="counter-text">Clean Houses</div>
+                </div>
+                <div class="counter-box">
+                    <div class="counter-num" data-target="32">0</div>
+                    <div class="counter-text">Professionals</div>
+                </div>
+                <div class="counter-box">
+                    <div class="counter-num" data-target="206">0</div>
+                    <div class="counter-text">Awards Won</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad" id="calculator">
+        <div class="container">
+            <div class="text-center gs-fade-up">
+                <h2 class="section-title">Calculate Your Cleaning Cost</h2>
+                <p class="section-subtitle">Use our interactive calculator to get an instant estimate based on your home size and required frequency.</p>
+            </div>
+
+            <div class="calculator-wrapper gs-fade-up">
+                
+                <div class="calc-controls">
+                    <div class="calc-group">
+                        <label>Cleaning Area (Sq Ft)</label>
+                        <input type="range" id="areaSlider" min="500" max="4000" step="100" value="1500">
+                        <div class="range-vals">
+                            <span>500 sqft</span>
+                            <span id="areaDisplay" style="color:var(--primary); font-weight:800;">1500 sqft</span>
+                            <span>4000 sqft</span>
+                        </div>
+                    </div>
+                    <div class="calc-group">
+                        <label>Cleaning Frequency</label>
+                        <select id="freqSelect" style="width:100%; padding:10px; border:1px solid var(--border); border-radius:3px; outline:none; font-family:var(--font-body); color:var(--text-gray);">
+                            <option value="1">One Time (Base Price)</option>
+                            <option value="0.9">Weekly (10% Off)</option>
+                            <option value="0.85">Bi-Weekly (15% Off)</option>
+                            <option value="0.95">Monthly (5% Off)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="pricing-grid">
+                    <div class="price-card">
+                        <h3 class="price-title">Basic Clean</h3>
+                        <div class="price-val"><span>$</span><span id="priceBasic">0</span><small>/ per visit</small></div>
+                        <ul class="price-list">
+                            <li>Dusting & Wiping</li>
+                            <li>Vacuuming & Mopping</li>
+                            <li>Bathroom Surface Clean</li>
+                            <li>Emptying Trash</li>
+                        </ul>
+                        <button class="btn btn-outline">Book Now</button>
+                    </div>
+                    
+                    <div class="price-card featured">
+                        <h3 class="price-title">Standard Clean</h3>
+                        <div class="price-val"><span>$</span><span id="priceStandard">0</span><small>/ per visit</small></div>
+                        <ul class="price-list">
+                            <li><strong>Everything in Basic</strong></li>
+                            <li>Kitchen Deep Scrub</li>
+                            <li>Baseboard Wipedown</li>
+                            <li>Window Sills</li>
+                        </ul>
+                        <button class="btn">Book Now</button>
+                    </div>
+
+                    <div class="price-card">
+                        <h3 class="price-title">Premium Clean</h3>
+                        <div class="price-val"><span>$</span><span id="pricePremium">0</span><small>/ per visit</small></div>
+                        <ul class="price-list">
+                            <li><strong>Everything in Standard</strong></li>
+                            <li>Inside Fridge & Oven</li>
+                            <li>Interior Windows</li>
+                            <li>Deep Carpet Cleaning</li>
+                        </ul>
+                        <button class="btn btn-outline">Book Now</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="logo" style="color:var(--white); margin-bottom: 20px;">
+                        <i class="fas fa-broom"></i> Cleanmate
+                    </div>
+                    <p style="margin-bottom: 20px;">We are a leading residential and commercial cleaning company dedicated to providing top-quality services with a focus on customer satisfaction and eco-friendly practices.</p>
+                    <a href="#" class="btn btn-outline" style="padding: 10px 20px;">Read More</a>
+                </div>
+                
+                <div>
+                    <h4>Our Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-angle-right" style="color:var(--primary); margin-right:5px;"></i> House Cleaning</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right" style="color:var(--primary); margin-right:5px;"></i> Apartment Cleaning</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right" style="color:var(--primary); margin-right:5px;"></i> Move In / Out</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right" style="color:var(--primary); margin-right:5px;"></i> Office Cleaning</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right" style="color:var(--primary); margin-right:5px;"></i> Post Construction</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-angle-right" style="color:var(--primary); margin-right:5px;"></i> About Us</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right" style="color:var(--primary); margin-right:5px;"></i> Testimonials</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right" style="color:var(--primary); margin-right:5px;"></i> Pricing</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right" style="color:var(--primary); margin-right:5px;"></i> FAQs</a></li>
+                        <li><a href="#"><i class="fas fa-angle-right" style="color:var(--primary); margin-right:5px;"></i> Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4>Contact Us</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-map-marker-alt"></i> <span>123 Cleaning Avenue, Suite 100<br>New York, NY 10001</span></li>
+                        <li><i class="fas fa-phone"></i> <span>1-800-123-4567<br>1-800-765-4321</span></li>
+                        <li><i class="fas fa-envelope"></i> <span>info@cleanmate.com<br>support@cleanmate.com</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <div class="container" style="display: flex; justify-content: center; align-items: center; gap: 25px; flex-wrap: wrap;">
+                <button type="button" class="btnfooter">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill = "#ffffff" width="25" height="25" class="bi bi-twitter-x" viewBox="0 0 16 16">
+                        <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+                    </svg>
+                </button>
+
+                <button type="button" class="btnfooter">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill = "#ffffff" width="25" height="25" class="bi bi-instagram" viewBox="0 0 16 16">
+                        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/>
+                    </svg>
+                </button>
+
+                <button type="button" class="btnfooter">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill = "#ffffff" width="25" height="25" class="bi bi-pinterest" viewBox="0 0 16 16">
+                        <path d="M8 0a8 8 0 0 0-2.915 15.452c-.07-.633-.134-1.606.027-2.297.146-.625.938-3.977.938-3.977s-.239-.479-.239-1.187c0-1.113.645-1.943 1.448-1.943.682 0 1.012.512 1.012 1.127 0 .686-.437 1.712-.663 2.663-.188.796.4 1.446 1.185 1.446 1.422 0 2.515-1.5 2.515-3.664 0-1.915-1.377-3.254-3.342-3.254-2.276 0-3.612 1.707-3.612 3.471 0 .688.265 1.425.595 1.826a.24.24 0 0 1 .056.23c-.061.252-.196.796-.222.907-.035.146-.116.177-.268.107-1-.465-1.624-1.926-1.624-3.1 0-2.523 1.834-4.84 5.286-4.84 2.775 0 4.932 1.977 4.932 4.62 0 2.757-1.739 4.976-4.151 4.976-.811 0-1.573-.421-1.834-.919l-.498 1.902c-.181.695-.669 1.566-.995 2.097A8 8 0 1 0 8 0"/>
+                    </svg>
+                </button>
+                
+            </div>
+            <div class="container" style="margin-top: 10px;">
+                <p>&copy; 2023 Cleanmate Theme Replica. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        // 1. Sticky Header Functionality
+        const header = document.getElementById("header");
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 50) {
+                header.classList.add("scrolled");
+            } else {
+                header.classList.remove("scrolled");
+            }
+        });
+
+        // 2. Pricing Calculator Logic
+        const areaSlider = document.getElementById('areaSlider');
+        const areaDisplay = document.getElementById('areaDisplay');
+        const freqSelect = document.getElementById('freqSelect');
+        
+        // Base Rates per SqFt
+        const rateBasic = 0.08; //8 cents per sqft
+        const rateStandard = 0.12; //12 cents per sqft
+        const ratePremium = 0.18; //18 cents per sqft
+
+        function updatePrices() {
+            const sqft = parseInt(areaSlider.value);
+            const discount = parseFloat(freqSelect.value);
+            
+            areaDisplay.innerText = sqft + " sqft";
+
+            // Calculate & Format
+            document.getElementById('priceBasic').innerText = (sqft * rateBasic * discount).toFixed(2);
+            document.getElementById('priceStandard').innerText = (sqft * rateStandard * discount).toFixed(2);
+            document.getElementById('pricePremium').innerText = (sqft * ratePremium * discount).toFixed(2);
+        }
+
+        // Event Listeners for Calculator
+        areaSlider.addEventListener('input', updatePrices);
+        freqSelect.addEventListener('change', updatePrices);
+        
+        // Initial Call
+        updatePrices();
+
+        // 3. GSAP Animations & ScrollTrigger Registration
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Simple Fade Up
+        gsap.utils.toArray('.gs-fade-up').forEach(element => {
+            let delay = element.getAttribute('data-delay') || 0;
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%", // Triggers when top of element hits 85% of viewport
+                },
+                y: 40,
+                opacity: 0,
+                duration: 0.8,
+                delay: delay,
+                ease: "power2.out"
+            });
+        });
+
+        // Slide from Left
+        gsap.utils.toArray('.gs-slide-left').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%",
+                },
+                x: 50,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+        });
+
+        // Slide from Right
+        gsap.utils.toArray('.gs-slide-right').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%",
+                },
+                x: -50,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.out"
+            });
+        });
+
+        // 4. Animated Counters
+        let counted = false;
+        ScrollTrigger.create({
+            trigger: "#counter-section",
+            start: "top 75%",
+            onEnter: () => {
+                if (!counted) {
+                    const counters = document.querySelectorAll('.counter-num');
+                    counters.forEach(counter => {
+                        const target = +counter.getAttribute('data-target');
+                        gsap.to(counter, {
+                            innerHTML: target,
+                            duration: 2,
+                            ease: "power1.inOut",
+                            snap: { innerHTML: 1 },
+                            onUpdate: function() {
+                                counter.innerHTML = Math.round(counter.innerHTML);
+                            }
+                        });
+                    });
+                    counted = true;
+                }
+            }
+        });
+
+        // 5. Click-and-Drag Carousel with Dynamic Dots
+            const viewport = document.querySelector('.carousel-viewport');
+            const track = document.querySelector('.carousel-track');
+            const dotsContainer = document.querySelector('.carousel-dots');
+            
+            if (viewport && track && dotsContainer) {
+                // Drag Variables
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+
+                // 1. Mouse Events for Dragging
+                viewport.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    startX = e.pageX - viewport.offsetLeft;
+                    scrollLeft = viewport.scrollLeft;
+                });
+
+                viewport.addEventListener('mouseleave', () => { isDown = false; });
+                viewport.addEventListener('mouseup', () => { isDown = false; });
+
+                viewport.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault(); // Stops text highlighting while dragging
+                    const x = e.pageX - viewport.offsetLeft;
+                    const walk = (x - startX) * 1.5; // Multiply by 1.5 to make dragging feel faster
+                    viewport.scrollLeft = scrollLeft - walk;
+                });
+
+                // 2. Dynamic Dots Logic
+                function setupDots() {
+                    dotsContainer.innerHTML = ''; // Clear existing dots
+                    
+                    const viewportWidth = viewport.clientWidth;
+                    const totalWidth = track.scrollWidth;
+                    // Calculate how many "pages" there are
+                    const totalPages = Math.ceil(totalWidth / viewportWidth);
+
+                    // Create the required number of dots
+                    for (let i = 0; i < totalPages; i++) {
+                        const dot = document.createElement('button');
+                        dot.classList.add('carousel-dot');
+                        if (i === 0) dot.classList.add('active'); // Make first dot active initially
+                        dot.setAttribute('aria-label', `Page ${i + 1}`);
+                        
+                        // Click dot to jump to that page
+                        dot.addEventListener('click', () => {
+                            const scrollPosition = i * viewportWidth;
+                            viewport.scrollTo({
+                                left: scrollPosition,
+                                behavior: 'smooth'
+                            });
+                        });
+                        
+                        dotsContainer.appendChild(dot);
+                    }
+                }
+
+                // Run setup on load and on window resize
+                setupDots();
+                window.addEventListener('resize', setupDots);
+
+                // 3. Update Active Dot when Scrolling/Dragging
+                viewport.addEventListener('scroll', () => {
+                    const dots = document.querySelectorAll('.carousel-dot');
+                    if(dots.length === 0) return;
+
+                    const viewportWidth = viewport.clientWidth;
+                    const scrollPosition = viewport.scrollLeft;
+                    
+                    // Figure out which "page" we are currently looking at
+                    const currentPage = Math.round(scrollPosition / viewportWidth);
+
+                    // Update the active class
+                    dots.forEach((dot, index) => {
+                        if (index === currentPage) {
+                            dot.classList.add('active');
+                        } else {
+                            dot.classList.remove('active');
+                        }
+                    });
+                });
+            }
+
+        // 6. Lightbox Gallery Logic (Simplified - NO EXPAND BUTTON)
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const lightbox = document.getElementById('lightbox-modal');
+        const lightboxImg = document.querySelector('.lightbox-img');
+        const closeBtn = document.querySelector('.lightbox-close-btn');
+
+        // Open Lightbox
+        galleryItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const fullImgUrl = this.getAttribute('data-full-img'); 
+                lightboxImg.src = fullImgUrl;
+                lightbox.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Stop background scrolling
+            });
+        });
+
+        // Close Lightbox function
+        function closeLightbox() {
+            if (lightbox) lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close when clicking the "X"
+        if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+
+        // Close when clicking the dark background (outside the image)
+        if (lightbox) {
+            lightbox.addEventListener('click', function(event) {
+                if (event.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+        }
+
+        // Accessibility: Close on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape" && lightbox && lightbox.style.display === 'block') {
+                closeLightbox();
+            }
+        });
+
+
+        // 7. Parallax Priorities Text Swap Logic (Cleaned up duplicates)
+        const priorityItems = document.querySelectorAll('.priority-item');
+        const priorityText = document.getElementById('priority-text');
+
+        if (priorityItems.length > 0 && priorityText) {
+          priorityItems.forEach(item => {
+            item.addEventListener('click', function() {
+                
+              // 1. Remove 'active' class from all icons to dim them
+              priorityItems.forEach(el => el.classList.remove('active'));
+              
+              // 2. Add 'active' class to the one just clicked to light it up
+              this.classList.add('active');
+
+              // 3. Get the specific text attached to the clicked icon
+              const newText = this.getAttribute('data-text');
+
+              // 4. Fade out the text
+              priorityText.style.opacity = 0;
+              
+              // 5. Wait 300ms (matching the CSS transition), swap the text, then fade it back in
+              setTimeout(() => {
+                  priorityText.innerText = newText;
+                  priorityText.style.opacity = 1;
+              }, 300);
+            });
+          });
+        };
+      });
+    </script>
+</body>
+</html>
